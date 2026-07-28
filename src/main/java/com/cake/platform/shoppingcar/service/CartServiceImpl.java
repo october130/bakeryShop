@@ -9,7 +9,7 @@ import com.cake.platform.shoppingcar.VO.CheckoutVO;
 import com.cake.platform.shoppingcar.dto.CartAddDTO;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -20,7 +20,7 @@ import java.util.Map;
 @Service
 public class CartServiceImpl  implements CartService{
     @Resource
-    private RedisTemplate<String, Object> redisTemplate;
+    private StringRedisTemplate stringRedisTemplate;
     @Resource
     private CakeMapper cakeMapper;
 
@@ -31,7 +31,7 @@ public class CartServiceImpl  implements CartService{
 
             String key = "cart:" + UserIdUtils.getUserId();
 
-            redisTemplate.opsForHash().increment(key, cakeId, cartAddDTO.getAmount());
+            stringRedisTemplate.opsForHash().increment(key, cakeId.toString(), cartAddDTO.getAmount());
             return Result.success("添加成功");
         }
 
@@ -39,14 +39,13 @@ public class CartServiceImpl  implements CartService{
     public void removeCart(Long cakeId) {
         Long userId = UserIdUtils.getUserId();
         String key = "cart:" + userId;
-        redisTemplate.opsForHash().delete(key, cakeId);
-        log.info("删除购物车成功");
+        stringRedisTemplate.opsForHash().delete(key, cakeId.toString());
     }
 
     @Override
     public List<CartItemVO> listCart() {
         String key = "cart:" + UserIdUtils.getUserId();
-        Map<Object, Object> entries = redisTemplate.opsForHash().entries(key);//用法
+        Map<Object, Object> entries = stringRedisTemplate.opsForHash().entries(key);//用法
         if (entries.isEmpty()){
             return new ArrayList<>();
         }
@@ -54,7 +53,7 @@ public class CartServiceImpl  implements CartService{
       List<CartItemVO> list = new ArrayList<>();
         for (Map.Entry<Object, Object> entry : entries.entrySet()) {
             Long cakeId = Long.valueOf(entry.getKey().toString());
-            Integer amount = (Integer) entry.getValue();
+            Integer amount = Integer.valueOf(entry.getValue().toString());
             Cake cake = cakeMapper.selectById(cakeId);
             CartItemVO cartItemVO = CartItemVO.builder()
                     .cakeId(cakeId)
@@ -73,7 +72,7 @@ public class CartServiceImpl  implements CartService{
     @Override
     public Result<CheckoutVO> checkout() {
         String key = "cart:" + UserIdUtils.getUserId();
-        Map<Object, Object> entries = redisTemplate.opsForHash().entries(key);
+        Map<Object, Object> entries = stringRedisTemplate.opsForHash().entries(key);
         if (entries.isEmpty()) {
             return Result.error("购物车为空");
         }
@@ -81,7 +80,7 @@ public class CartServiceImpl  implements CartService{
         Integer totalPrice = 0;
         for (Map.Entry<Object, Object> entry : entries.entrySet()) {
             Long cakeId = Long.valueOf(entry.getKey().toString());
-            Integer amount = (Integer) entry.getValue();
+            Integer amount = Integer.valueOf(entry.getValue().toString());
             Cake cake = cakeMapper.selectById(cakeId);
             if (cake == null) {
                 return Result.error(" 蛋糕不存在");
@@ -103,6 +102,13 @@ public class CartServiceImpl  implements CartService{
                 .build();
         return Result.success("获取成功", checkoutVO);
 
+    }
+
+    @Override
+    public void clearCart() {
+        String key = "cart:" + UserIdUtils.getUserId();
+        stringRedisTemplate.delete(key);
+        log.info("清空购物车成功");
     }
 
 

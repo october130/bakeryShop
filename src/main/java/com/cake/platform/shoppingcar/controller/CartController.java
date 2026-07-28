@@ -20,13 +20,15 @@ import java.util.List;
 public class CartController {
     @Resource
     private CartService cartService;
+
     @PostMapping("/add")
     @Operation(summary = "添加购物车")
-    public Result addCart(CartAddDTO cartAddDTO) {
+    public Result addCart(@RequestBody CartAddDTO cartAddDTO) {
         log.info("添加购物车");
         cartService.addCart(cartAddDTO);
         return Result.success("添加成功");
     }
+
     @GetMapping("/list")
     @Operation(summary = "获取购物车列表")
     public List<CartItemVO> listCart() {
@@ -34,6 +36,7 @@ public class CartController {
         List<CartItemVO> cartItemVO = cartService.listCart();
         return cartItemVO;
     }
+
     @DeleteMapping("/remove/{cakeId}")
     @Operation(summary = "删除购物车")
     public Result removeCart(@PathVariable Long cakeId) {
@@ -41,6 +44,7 @@ public class CartController {
         cartService.removeCart( cakeId);
         return Result.success("删除成功");
     }
+
     @PostMapping("/checkout")
     @Operation(summary = "购物车结算")
     public Result<CheckoutVO> checkout() {

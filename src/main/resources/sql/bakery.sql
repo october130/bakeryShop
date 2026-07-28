@@ -150,3 +150,26 @@ CREATE TABLE `follow` (
                           `create_time` DATETIME DEFAULT CURRENT_TIMESTAMP,
                           UNIQUE KEY `uk_user_bakery` (`user_id`, `bakery_id`)
 ) COMMENT '关注表';
+
+ -- AI版块--蛋糕组件表
+
+CREATE TABLE cake_component (
+                                id BIGINT PRIMARY KEY AUTO_INCREMENT COMMENT '主键',
+                                name VARCHAR(50) NOT NULL COMMENT '组件名称',
+                                type VARCHAR(20) NOT NULL COMMENT '类型: size/flavor/cream/decoration',
+                                price INT NOT NULL COMMENT '价格(分)',
+                                description VARCHAR(200) COMMENT '描述'
+) COMMENT '蛋糕组件表(DIY零件)';
+
+-- 插入示例数据
+INSERT INTO cake_component (name, type, price, description) VALUES
+                                                                ('6寸', 'size', 8000, '适合2-4人'),
+                                                                ('8寸', 'size', 12000, '适合4-6人'),
+                                                                ('10寸', 'size', 16000, '适合6-8人'),
+                                                                ('草莓', 'flavor', 2000, '新鲜草莓果酱'),
+                                                                ('巧克力', 'flavor', 2500, '比利时巧克力'),
+                                                                ('芒果', 'flavor', 2000, '热带芒果慕斯'),
+                                                                ('动物奶油', 'cream', 3000, '天然动物奶油'),
+                                                                ('植物奶油', 'cream', 1500, '植物性奶油'),
+                                                                ('蜡烛', 'decoration', 1000, '生日蜡烛'),
+                                                                ('水果装饰', 'decoration', 2500, '新鲜水果摆盘');

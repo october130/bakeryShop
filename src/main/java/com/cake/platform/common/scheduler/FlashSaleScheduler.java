@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -30,6 +31,7 @@ public class FlashSaleScheduler {
      * 每分钟执行一次，预热即将开始或正在进行的秒杀活动
      */
     @Scheduled(cron = "0 * * * * ?")
+    @Transactional
     public void preheatFlashSale() {
         LocalDateTime now = LocalDateTime.now();
         // 查询: 活动已开始且未结束，状态为"未开始"(status=0)

@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class OrderItemVO {
+public class OrderItemVO {//订单项
    private Long cakeId;
     private   String cakeName;
     private   Integer price;       // 单价

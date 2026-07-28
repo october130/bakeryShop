@@ -17,6 +17,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -46,6 +47,7 @@ public class FlashSaleServiceImpl implements FlashSaleService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Result<FlashSaleVO> getFlashSaleDetail(Long id) {
         String key = "flashSale:detail:" + id;
         FlashSaleVO flashRedisSaleVO = (FlashSaleVO) redisTemplate.opsForValue().get(key);

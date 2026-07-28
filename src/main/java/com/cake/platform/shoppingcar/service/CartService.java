@@ -15,4 +15,6 @@ public interface CartService {
     List<CartItemVO> listCart();
 
     Result<CheckoutVO> checkout();
+
+    void clearCart();
 }

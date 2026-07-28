@@ -12,11 +12,12 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class OrderVO {
+public class OrderVO {//订单
     private Long id;//订单id
     private String orderNo;
     private Integer totalPrice;
-    private String status;
+    private  Integer status;
     private LocalDateTime createTime;
     private List<OrderItemVO> items;
+    private LocalDateTime payTime;
 }
