@@ -32,6 +32,7 @@ public class SeckillConsumer {//秒杀消费者
         flashSaleOrder.setFlashSaleId(flashSaleId);
         flashSaleOrder.setUserId(userId);
         flashSaleOrder.setOrderNo(generateOrderNo);
+        
         flashSaleOrder.setStatus(0);
         flashSaleOrderMapper.insert(flashSaleOrder);//最终将订单写入数据库
         log.info("订单创建成功: {}", flashSaleOrder);

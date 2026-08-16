@@ -26,14 +26,14 @@ public class CartServiceImpl  implements CartService{
 
     @Override
     public Result addCart(CartAddDTO cartAddDTO) {
-
         Long cakeId = cartAddDTO.getCakeId();
-
-            String key = "cart:" + UserIdUtils.getUserId();
-
-            stringRedisTemplate.opsForHash().increment(key, cakeId.toString(), cartAddDTO.getAmount());
-            return Result.success("添加成功");
+        if (cakeId == null) {
+            return Result.error("蛋糕ID不能为空");
         }
+        String key = "cart:" + UserIdUtils.getUserId();
+        stringRedisTemplate.opsForHash().increment(key, cakeId.toString(), cartAddDTO.getAmount());
+        return Result.success("添加成功");
+    }
 
     @Override
     public void removeCart(Long cakeId) {

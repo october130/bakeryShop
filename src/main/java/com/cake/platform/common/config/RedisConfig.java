@@ -27,6 +27,11 @@ public class RedisConfig {
         om.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
         om.activateDefaultTyping(om.getPolymorphicTypeValidator(), ObjectMapper.DefaultTyping.NON_FINAL);
 
+        // 无类型信息的 ObjectMapper，用于兼容旧格式数据
+        ObjectMapper plainOm = new ObjectMapper();
+        plainOm.registerModule(new JavaTimeModule());
+        plainOm.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+
         RedisSerializer<Object> jsonSerializer = new RedisSerializer<Object>() {
             @Override
             public byte[] serialize(Object value) throws SerializationException {
@@ -48,7 +53,12 @@ public class RedisConfig {
                 try {
                     return om.readValue(bytes, Object.class);
                 } catch (IOException e) {
-                    throw new SerializationException("Could not deserialize: " + e.getMessage(), e);
+                    // 回退：兼容旧版本未带类型信息的纯 JSON 数据
+                    try {
+                        return plainOm.readValue(bytes, Object.class);
+                    } catch (IOException ex) {
+                        throw new SerializationException("Could not deserialize: " + ex.getMessage(), ex);
+                    }
                 }
             }
         };

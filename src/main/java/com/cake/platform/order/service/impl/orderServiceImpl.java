@@ -2,6 +2,8 @@ package com.cake.platform.order.service.impl;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.cake.platform.bakeryShop.entity.Bakery;
+import com.cake.platform.bakeryShop.mapper.BakeryMapper;
 import com.cake.platform.common.config.RabbitMQConfig;
 import com.cake.platform.common.exception.BusinessException;
 import com.cake.platform.common.result.Result;
@@ -18,6 +20,7 @@ import com.cake.platform.shoppingcar.VO.CartItemVO;
 import com.cake.platform.shoppingcar.VO.CheckoutVO;
 import com.cake.platform.shoppingcar.service.CartService;
 import jakarta.annotation.Resource;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -26,8 +29,11 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+@Slf4j
 @Service
 public class orderServiceImpl  implements orderService {
+    @Resource
+    private BakeryMapper   bakeryMapper;
     @Resource
   private RabbitTemplate rabbitTemplate;
     @Resource
@@ -190,12 +196,50 @@ public class orderServiceImpl  implements orderService {
         return Result.success("取消成功");
     }
 
+
+    /*
+    商家端
+     */
+
+    @Override
+    public Result<List<OrderVO>> listAdminOrder() {
+        Bakery bakery = getMyBakery();
+        List<Order> orders = orderMapper.selectList(
+                new QueryWrapper<Order>().eq("bakery_id", bakery.getId()).orderByDesc("create_time")
+        );
+        log.info("已经获取到订单");
+        List<OrderVO> orderVOS = orders.stream().map(order -> OrderVO.builder()
+                .id(order.getId())
+                .orderNo(order.getOrderNo())
+                .totalPrice(order.getTotalAmount())
+                .status(order.getStatus())
+                .createTime(order.getCreateTime())
+                .build()).toList();
+        return Result.success(orderVOS);
+    }
+
+    /**
+     * 获取当前登录商家的店铺（按 owner_id 关联）
+     */
+    private Bakery getMyBakery() {
+        Bakery bakery = bakeryMapper.selectOne(
+                new QueryWrapper<Bakery>().eq("owner_id", UserIdUtils.getUserId()));
+        if (bakery == null) {
+            throw new BusinessException("商家不存在,您还未开通商铺");
+        }
+        return bakery;
+    }
+
+
     @Override
     @Transactional
     public Result acceptOrder(Long orderId) {
         Order order = orderMapper.selectById(orderId);
         if (order == null) {
             throw new BusinessException("订单不存在");
+        }
+        if (!order.getBakeryId().equals(getMyBakery().getId())) {
+            throw new BusinessException(403, "无权操作该店铺订单");
         }
         if (order.getStatus() != 1) {
             throw new BusinessException("只有已支付的订单才能接单");
@@ -213,6 +257,9 @@ public class orderServiceImpl  implements orderService {
         if (order == null) {
             throw new BusinessException("订单不存在");
         }
+        if (!order.getBakeryId().equals(getMyBakery().getId())) {
+            throw new BusinessException(403, "无权操作该店铺订单");
+        }
         if (order.getStatus() != 2) {
             throw new BusinessException("只有制作中的订单才能发货");
         }
@@ -229,6 +276,9 @@ public class orderServiceImpl  implements orderService {
         Order order = orderMapper.selectById(orderId);
         if (order == null) {
             throw new BusinessException("订单不存在");
+        }
+        if (!order.getBakeryId().equals(getMyBakery().getId())) {
+            throw new BusinessException(403, "无权操作该店铺订单");
         }
         if (order.getStatus() != 3) {
             throw new BusinessException("只有配送中的订单才能确认完成");

@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@TableName("order")
+@TableName("`order`")
 public class Order {
     @TableId(type = IdType.AUTO)
     private Long id;

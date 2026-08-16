@@ -2,7 +2,6 @@ package com.cake.platform.order.controller;
 
 import com.cake.platform.common.result.Result;
 import com.cake.platform.order.dto.OrderDTO;
-import com.cake.platform.order.entity.Order;
 import com.cake.platform.order.service.orderService;
 import com.cake.platform.order.vo.OrderVO;
 import io.swagger.v3.oas.annotations.Operation;
@@ -17,7 +16,7 @@ import java.util.List;
 @RequestMapping("/api/order")
 @Tag(name = "订单业务接口")
 @Slf4j
-public class OrderController {
+public class orderController {
     @Resource
     private orderService orderService;
 
@@ -52,24 +51,5 @@ public class OrderController {
         return orderService.cancelOrder(orderId);
     }
 
-    // ===== 商家端接口 =====
-
-    @PutMapping("/admin/{orderId}/accept")
-    @Operation(summary = "商家接单（1已支付 → 2制作中）")
-    public Result acceptOrder(@PathVariable Long orderId) {
-        return orderService.acceptOrder(orderId);
-    }
-
-    @PutMapping("/admin/{orderId}/deliver")
-    @Operation(summary = "商家发货（2制作中 → 3配送中）")
-    public Result deliverOrder(@PathVariable Long orderId) {
-        return orderService.deliverOrder(orderId);
-    }
-
-    @PutMapping("/admin/{orderId}/complete")
-    @Operation(summary = "商家完成（3配送中 → 4已完成）")
-    public Result completeOrder(@PathVariable Long orderId) {
-        return orderService.completeOrder(orderId);
-    }
 
 }

@@ -44,8 +44,6 @@ public Result< CakeRecommendation> CakeRecommend(String userMsg,String sessionId
 
         CakeRecommendation AIResponse = callDeepseek(systemPrompt, userPrompt, sessionId);
 
-
-
         log.info("AI返回结果：{}", AIResponse);
         return  Result.success(AIResponse);
     } catch (IOException e) {
@@ -98,6 +96,7 @@ private CakeRecommendation callDeepseek( String systemPrompt, String userPrompt,
             throw new RuntimeException(e);
         }
     }
+
 
 }
 
