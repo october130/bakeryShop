@@ -1,0 +1,158 @@
+@use './variables' as *;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: $font-body;
+  background: $bg-white;
+  color: $text-dark;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: $font-display;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+a {
+  color: $text-dark;
+  text-decoration: none;
+  transition: $transition;
+
+  &:hover {
+    color: $primary;
+  }
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+.container {
+  max-width: $max-width;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+// 按钮
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px 24px;
+  border-radius: $radius-sm;
+  font-weight: 500;
+  font-size: 14px;
+  cursor: pointer;
+  transition: $transition;
+  border: none;
+  line-height: 1.5;
+
+  &--primary {
+    background: $primary;
+    color: $white;
+
+    &:hover {
+      background: $primary-dark;
+    }
+  }
+
+  &--outline {
+    background: transparent;
+    color: $primary;
+    border: 1px solid $primary;
+
+    &:hover {
+      background: $primary;
+      color: $white;
+    }
+  }
+
+  &--gold {
+    background: $gold;
+    color: $white;
+
+    &:hover {
+      background: #C09040;
+    }
+  }
+
+  &--lg {
+    padding: 14px 36px;
+    font-size: 16px;
+  }
+
+  &--sm {
+    padding: 6px 16px;
+    font-size: 13px;
+  }
+}
+
+// 页面头部标题
+.page-header {
+  text-align: center;
+  padding: 48px 0 32px;
+  background: $bg-light;
+
+  &__title {
+    font-size: 28px;
+    font-weight: 600;
+    color: $text-dark;
+    margin-bottom: 8px;
+  }
+
+  &__subtitle {
+    color: $text-light;
+    font-size: 14px;
+  }
+}
+
+// Element Plus 覆盖
+.el-button--primary {
+  --el-button-bg-color: #{$primary};
+  --el-button-border-color: #{$primary};
+  --el-button-hover-bg-color: #{$primary-dark};
+  --el-button-hover-border-color: #{$primary-dark};
+}
+
+.el-menu--horizontal {
+  border-bottom: none !important;
+}
+
+// 滚动条
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: $bg-light;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 3px;
+}
+
+// 动画
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}

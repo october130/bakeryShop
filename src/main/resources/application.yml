@@ -23,6 +23,15 @@ spring:
     password: guest
     virtual-host: /
 
+  # Spring AI (DeepSeek 兼容 OpenAI 协议)
+  ai:
+    openai:
+      api-key: ${DEEPSEEK_API_KEY:your-api-key-here}
+      base-url: https://api.deepseek.com
+      chat:
+        options:
+          model: deepseek-chat
+
 # JWT
 jwt:
   secret: ${JWT_SECRET:Y2FrZS1wbGF0Zm9ybS1qd3Qtc2VjcmV0LWtleS0yMDI2}
