@@ -1,6 +1,7 @@
 package com.cake.platform.order.service.impl;
 
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.cake.platform.common.result.Result;
 import com.cake.platform.common.utils.UserIdUtils;
 import com.cake.platform.order.dto.OrderDTO;
@@ -22,7 +23,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class orderServiceImpl  implements orderService {
@@ -96,5 +96,33 @@ public class orderServiceImpl  implements orderService {
                 .build();
 
         return Result.success("下单成功", orderVO);
+    }
+
+    @Override
+    @Transactional
+    public Result<OrderVO> payOrder(OrderDTO orderDTO) {
+        Order order = orderMapper.selectOne(
+                new QueryWrapper<Order>()
+                        .eq("order_no", orderDTO.getOrderNo())
+        );
+        if (order==null){
+            return Result.error("订单不存在");
+        }
+        if (order.getStatus()== 1){
+            return Result.success("订单已支付", null);
+        }
+        if (order.getStatus() == 4) {
+            return Result.error("订单已取消，无法支付");
+        }
+        if (!order.getTotalAmount().equals(orderDTO.getTotalAmount())){
+            return Result.error("支付金额异常，请检查");
+        }
+        order.setStatus(1);
+        order.setPayTime(LocalDateTime.now());
+        order.setPay_channel("虚拟账户余额支付");
+        String translation_id = System.currentTimeMillis()+order.getOrderNo();
+        order.setTranslation_id(translation_id);
+        orderMapper.updateById(order);
+        return Result.success("支付成功", null);
     }
 }

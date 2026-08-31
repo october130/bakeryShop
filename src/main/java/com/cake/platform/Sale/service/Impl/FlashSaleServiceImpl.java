@@ -91,6 +91,11 @@ public class FlashSaleServiceImpl implements FlashSaleService {
         if (!isLock) {
             return Result.error("秒杀失败,请稍后重试");
         }
+        String LimitKey = "limit" + userId;
+        Long count = redisTemplate.opsForValue().increment(LimitKey);
+      if (count!=null&&count>3){
+          return Result.error("操作频率过高，请稍后重试");
+      }
         try {
             Long result = redisTemplate.execute(
                     SECKILL_SCRIPT,

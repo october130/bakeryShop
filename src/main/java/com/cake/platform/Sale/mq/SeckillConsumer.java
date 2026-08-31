@@ -1,5 +1,6 @@
 package com.cake.platform.Sale.mq;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.cake.platform.Sale.entity.FlashSale;
 import com.cake.platform.Sale.entity.FlashSaleOrder;
@@ -10,6 +11,7 @@ import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Map;
 
@@ -21,23 +23,48 @@ public class SeckillConsumer {//秒杀消费者
     @Resource
     private FlashSaleMapper flashSaleMapper;
     @RabbitListener(queues = RabbitMQConfig.QUEUE_NAME)//监听队列
+    @Transactional
     public void listener(Map<String, Object>msg){
         log.info("接收到消息: {}", msg);
+
         Long flashSaleId =Long.valueOf(msg.get("flashSaleId").toString()) ;
       Long userId =  Long.valueOf(msg.get("userId").toString());//从用户端获取用户ID，
         //通过生产者发送的参数，生成订单
-        String generateOrderNo = "FS" + System.currentTimeMillis();//订单编号
+        String generateOrderNo = "FS" + System.currentTimeMillis() + userId;//订单编号
         log.info("订单编号: {}", generateOrderNo);
+
+
+//        检查用户是否已经购买过该秒杀商品
+        //在数据库中检查用户是否已经购买过该秒杀商品
+        //在redis层面是用lua脚本实现的
+        Long count = flashSaleOrderMapper.selectCount(
+                new QueryWrapper<FlashSaleOrder>()
+                        .eq("flash_sale_id", flashSaleId)
+                        .eq("user_id", userId)
+        );
+        if (count > 0) {
+            log.info("用户 {} 已经购买过该秒杀商品 {}", userId, flashSaleId);
+            return;
+        }
+        int rows = flashSaleMapper.update(null,
+                new UpdateWrapper<FlashSale>()
+                        .eq("id", flashSaleId)
+                        .gt("stock", 0)
+                        .setSql("stock = stock - 1"));
+        if (rows == 0) {
+            log.info("秒杀商品 {} 已经售罄", flashSaleId);
+            return;
+        }
+
+
         FlashSaleOrder flashSaleOrder = new FlashSaleOrder();
         flashSaleOrder.setFlashSaleId(flashSaleId);
         flashSaleOrder.setUserId(userId);
         flashSaleOrder.setOrderNo(generateOrderNo);
-        flashSaleOrder.setStatus(0);
+        flashSaleOrder.setStatus(0);//订单状态：0-待支付
         flashSaleOrderMapper.insert(flashSaleOrder);//最终将订单写入数据库
         log.info("订单创建成功: {}", flashSaleOrder);
-        flashSaleMapper.update( null, new UpdateWrapper<FlashSale>()
-                .eq("id", flashSaleId)
-                .setSql("stock = stock -1"));
+
     }
 
 }

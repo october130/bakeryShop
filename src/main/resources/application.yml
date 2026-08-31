@@ -21,7 +21,17 @@ spring:
     port: 5672
     username: guest
     password: guest
-    virtual-host: /
+    virtual-host: / # 默认虚拟主机
+    publisher-confirm-type: correlated # 确认模式
+    publisher-returns: true
+    listener:
+      simple:
+        acknowledge-mode: manual # 手动ack消息确认
+        retry:
+          enabled: true
+          max-attempts: 3
+          initial-interval: 1000ms
+
 
 # JWT
 jwt:

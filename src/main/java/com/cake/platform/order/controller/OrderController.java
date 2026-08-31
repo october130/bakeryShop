@@ -26,5 +26,10 @@ public class OrderController {
     public Result<OrderVO> creatCheckout(@RequestBody OrderDTO orderDTO) {
         return orderService.createOrder(orderDTO);
     }
+    @PostMapping("/pay")
+    @Operation(summary = "订单支付接口")
+    public Result<OrderVO> payOrder(@RequestBody OrderDTO orderDTO) {
+        return orderService.payOrder(orderDTO);
+    }
 
 }

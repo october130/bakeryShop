@@ -83,17 +83,6 @@ CREATE TABLE `flash_sale_order` (
                                     KEY `idx_order_no` (`order_no`)
 ) COMMENT '抢购订单表';
 
--- 购物车表
-CREATE TABLE `cart` (
-                        `id` BIGINT PRIMARY KEY AUTO_INCREMENT,
-                        `user_id` BIGINT NOT NULL,
-                        `cake_id` BIGINT NOT NULL,
-                        `quantity` INT DEFAULT 1,
-                        `custom_info` VARCHAR(256) DEFAULT '' COMMENT '定制信息(祝福语等)',
-                        `create_time` DATETIME DEFAULT CURRENT_TIMESTAMP,
-                        KEY `idx_user` (`user_id`)
-) COMMENT '购物车表';
-
 -- 订单表
 CREATE TABLE `order` (
                          `id` BIGINT PRIMARY KEY AUTO_INCREMENT,
@@ -128,6 +117,34 @@ CREATE TABLE `order_detail` (
                                 KEY `idx_order` (`order_id`)
 ) COMMENT '订单详情表';
 
+
+
+
+-- 冗余数据
+-- 不需要购物车表，直接缓存到redis里面
+CREATE TABLE `cart` (
+                        `id` BIGINT PRIMARY KEY AUTO_INCREMENT,
+                        `user_id` BIGINT NOT NULL,
+                        `cake_id` BIGINT NOT NULL,
+                        `quantity` INT DEFAULT 1,
+                        `custom_info` VARCHAR(256) DEFAULT '' COMMENT '定制信息(祝福语等)',
+                        `create_time` DATETIME DEFAULT CURRENT_TIMESTAMP,
+                        KEY `idx_user` (`user_id`)
+) COMMENT '购物车表';
+
+
+
+alter table `order`
+    add column  pay_channel  varchar(20) not null comment "支付渠道",
+    add column  translation_id  datetime comment "第三方返交易流水单号";
+create table  `payment_log` (
+                                `order_no` varchar(20)  comment  "订单编号" not null,
+                                `amount` decimal(10, 2)  comment  "支付金额" not null,
+                                `translation_id` varchar(20)  comment  "第三方交易流水单号",
+                                `status` varchar(20)  comment  "支付状态" unique not null
+)comment  "支付日志表";
+
+-- 这两个表对应的功能还未实现
 -- 评价表
 CREATE TABLE `review` (
                           `id` BIGINT PRIMARY KEY AUTO_INCREMENT,

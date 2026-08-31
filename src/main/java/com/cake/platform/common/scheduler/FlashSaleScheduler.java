@@ -60,8 +60,13 @@ public class FlashSaleScheduler {
             // 3. 更新状态为"进行中"
             flashSale.setStatus(1);
             flashSaleMapper.updateById(flashSale);
+            redisTemplate.opsForValue().set("flashSale:status:" + flashSale.getId(), flashSale.getStatus());//更新缓存状态
             log.info("活动状态更新为进行中: flashSaleId={}", flashSale.getId());
         }
+
+
+
+
     }
 
     private static FlashSaleVO toVO(FlashSale flashSale, String cakeName, Integer originalPrice) {

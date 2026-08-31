@@ -12,6 +12,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class OrderDTO {
+    private String orderNo;
+    private Integer totalAmount;// 总金额
     private String address;      // 配送地址
     private String phone;        // 联系电话
     private String remark;       // 备注

@@ -6,4 +6,6 @@ import com.cake.platform.order.vo.OrderVO;
 
 public interface orderService {
     Result<OrderVO> createOrder(OrderDTO orderDTO);
+
+    Result<OrderVO> payOrder(OrderDTO orderDTO);
 }

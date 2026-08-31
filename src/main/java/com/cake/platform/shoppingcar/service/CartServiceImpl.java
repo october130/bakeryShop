@@ -29,9 +29,10 @@ public class CartServiceImpl  implements CartService{
 
         Long cakeId = cartAddDTO.getCakeId();
 
-            String key = "cart:" + UserIdUtils.getUserId();
+        String key = "cart:" + UserIdUtils.getUserId();//redis拼接key
 
-            redisTemplate.opsForHash().increment(key, cakeId, cartAddDTO.getAmount());
+        redisTemplate.opsForHash().increment(key, cakeId, cartAddDTO.getAmount());//之后用hash结构存储购物车数据，
+        // 其中key是用户id，field是蛋糕id，value是蛋糕数量
             return Result.success("添加成功");
         }
 
@@ -71,9 +72,9 @@ public class CartServiceImpl  implements CartService{
     }
 
     @Override
-    public Result<CheckoutVO> checkout() {
+    public Result<CheckoutVO> checkout() {//结算
         String key = "cart:" + UserIdUtils.getUserId();
-        Map<Object, Object> entries = redisTemplate.opsForHash().entries(key);
+        Map<Object, Object> entries = redisTemplate.opsForHash().entries(key);//用来获取购物车数据
         if (entries.isEmpty()) {
             return Result.error("购物车为空");
         }
