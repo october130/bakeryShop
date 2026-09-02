@@ -24,4 +24,6 @@ public interface orderService {
     Result deliverOrder(Long orderId);
 
     Result completeOrder(Long orderId);
+
+    Result<OrderVO> getOrderAdminDetail(Long orderId);
 }

@@ -276,6 +276,35 @@ public class orderServiceImpl  implements orderService {
         return Result.success("订单已完成");
     }
 
+    @Override
+    public Result<OrderVO> getOrderAdminDetail(Long orderId) {
+        Order order = orderMapper.selectById(orderId);
+        if (order == null) {
+            return Result.error("订单不存在");
+        }
+        if (!order.getBakeryId().equals(getMyBakery().getId())){
+            return Result.error("无权查看该店铺下订单");
+        }
+        List<OrderDetail> details = orderDetailMapper.selectList(
+                new QueryWrapper<OrderDetail>().eq("order_id", orderId));
+        List<OrderItemVO> items = details.stream().map(d -> OrderItemVO.builder()
+                .cakeId(d.getCakeId())
+                .cakeName(d.getCakeName())
+                .price(d.getPrice())
+                .amount(d.getQuantity())
+                .customInfo(d.getCustomInfo())
+                .build()).toList();
+        OrderVO vo = OrderVO.builder()
+                .id(order.getId())
+                .orderNo(order.getOrderNo())
+                .totalPrice(order.getTotalAmount())
+                .status(statusText(order.getStatus()))
+                .createTime(order.getCreateTime())
+                .items(items)
+                .build();
+        return Result.success(vo);
+    }
+
     /** 获取当前登录商家（店铺主）的店铺 */
     private Bakery getMyBakery() {
         Bakery bakery = bakeryMapper.selectOne(
