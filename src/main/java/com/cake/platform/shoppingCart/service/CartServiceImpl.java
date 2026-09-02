@@ -1,12 +1,12 @@
-package com.cake.platform.shoppingcar.service;
+package com.cake.platform.shoppingCart.service;
 
 import com.cake.platform.cake.entity.Cake;
 import com.cake.platform.cake.mapper.CakeMapper;
 import com.cake.platform.common.result.Result;
 import com.cake.platform.common.utils.UserIdUtils;
-import com.cake.platform.shoppingcar.VO.CartItemVO;
-import com.cake.platform.shoppingcar.VO.CheckoutVO;
-import com.cake.platform.shoppingcar.dto.CartAddDTO;
+import com.cake.platform.shoppingCart.VO.CartItemVO;
+import com.cake.platform.shoppingCart.VO.CheckoutVO;
+import com.cake.platform.shoppingCart.dto.CartAddDTO;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -23,6 +23,7 @@ public class CartServiceImpl  implements CartService{
     private RedisTemplate<String, Object> redisTemplate;
     @Resource
     private CakeMapper cakeMapper;
+
 
     @Override
     public Result addCart(CartAddDTO cartAddDTO) {
@@ -73,19 +74,29 @@ public class CartServiceImpl  implements CartService{
 
     @Override
     public Result<CheckoutVO> checkout() {//结算
-        String key = "cart:" + UserIdUtils.getUserId();
+        String key = "cart:" + UserIdUtils.getUserId();//购物车key
         Map<Object, Object> entries = redisTemplate.opsForHash().entries(key);//用来获取购物车数据
         if (entries.isEmpty()) {
             return Result.error("购物车为空");
         }
         List<CartItemVO> cartItemVOList = new ArrayList<>();
+        Long firstBakeryId = null;
         Integer totalPrice = 0;
         for (Map.Entry<Object, Object> entry : entries.entrySet()) {
+
             Long cakeId = Long.valueOf(entry.getKey().toString());
             Integer amount = (Integer) entry.getValue();
             Cake cake = cakeMapper.selectById(cakeId);
+
+
             if (cake == null) {
-                return Result.error(" 蛋糕不存在");
+                redisTemplate.opsForHash().delete(key, cakeId);
+                continue;
+            }
+            if (firstBakeryId == null) {
+                firstBakeryId = cake.getBakeryId();
+            }else if (!firstBakeryId.equals(cake.getBakeryId())){
+                return Result.error("购物车商品来自多个 bakery，请分开结算");
             }
             CartItemVO cartItemVO = CartItemVO.builder()
                     .cakeId(cakeId)
@@ -104,6 +115,13 @@ public class CartServiceImpl  implements CartService{
                 .build();
         return Result.success("获取成功", checkoutVO);
 
+    }
+
+    @Override
+    public void clearCart() {
+        String key = "cart:" + UserIdUtils.getUserId();//购物车key
+        redisTemplate.delete(key);
+        log.info("清空购物车成功");
     }
 
 

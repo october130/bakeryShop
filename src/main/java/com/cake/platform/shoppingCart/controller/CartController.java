@@ -1,10 +1,10 @@
-package com.cake.platform.shoppingcar.controller;
+package com.cake.platform.shoppingCart.controller;
 
 import com.cake.platform.common.result.Result;
-import com.cake.platform.shoppingcar.VO.CartItemVO;
-import com.cake.platform.shoppingcar.VO.CheckoutVO;
-import com.cake.platform.shoppingcar.dto.CartAddDTO;
-import com.cake.platform.shoppingcar.service.CartService;
+import com.cake.platform.shoppingCart.VO.CartItemVO;
+import com.cake.platform.shoppingCart.VO.CheckoutVO;
+import com.cake.platform.shoppingCart.dto.CartAddDTO;
+import com.cake.platform.shoppingCart.service.CartService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.annotation.Resource;
@@ -22,7 +22,7 @@ public class CartController {
     private CartService cartService;
     @PostMapping("/add")
     @Operation(summary = "添加购物车")
-    public Result addCart(CartAddDTO cartAddDTO) {
+    public Result addCart(@RequestBody CartAddDTO cartAddDTO) {
         log.info("添加购物车");
         cartService.addCart(cartAddDTO);
         return Result.success("添加成功");

@@ -1,4 +1,4 @@
-package com.cake.platform.shoppingcar.dto;
+package com.cake.platform.shoppingCart.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

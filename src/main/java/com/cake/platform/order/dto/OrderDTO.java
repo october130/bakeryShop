@@ -1,5 +1,6 @@
 package com.cake.platform.order.dto;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,7 +13,9 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class OrderDTO {
-    private String orderNo;
+    private Long userId;
+    @NotBlank(message = "订单号不能为空")
+    private String orderNo;// 订单号
     private Integer totalAmount;// 总金额
     private String address;      // 配送地址
     private String phone;        // 联系电话

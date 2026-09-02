@@ -1,4 +1,4 @@
-package com.cake.platform.shoppingcar.VO;
+package com.cake.platform.shoppingCart.VO;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

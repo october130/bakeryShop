@@ -1,4 +1,4 @@
-package com.cake.platform.common.scheduler;
+package com.cake.platform.Sale.scheduler;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.cake.platform.Sale.VO.FlashSaleVO;
@@ -47,6 +47,11 @@ public class FlashSaleScheduler {
                 redisTemplate.opsForValue().set(stockKey, flashSale.getStock());
                 log.info("库存预热完成: flashSaleId={}, stock={}", flashSale.getId(), flashSale.getStock());
             }
+            // 3. 更新状态为"进行中"
+            flashSale.setStatus(1);
+            flashSaleMapper.updateById(flashSale);
+            redisTemplate.opsForValue().set("flashSale:status:" + flashSale.getId(), flashSale.getStatus());//更新缓存状态
+            log.info("活动状态更新为进行中: flashSaleId={}", flashSale.getId());
 
             // 2. 详情预热
             String detailKey = "flashSale:detail:" + flashSale.getId();
@@ -57,11 +62,7 @@ public class FlashSaleScheduler {
                 log.info("详情预热完成: flashSaleId={}", flashSale.getId());
             }
 
-            // 3. 更新状态为"进行中"
-            flashSale.setStatus(1);
-            flashSaleMapper.updateById(flashSale);
-            redisTemplate.opsForValue().set("flashSale:status:" + flashSale.getId(), flashSale.getStatus());//更新缓存状态
-            log.info("活动状态更新为进行中: flashSaleId={}", flashSale.getId());
+
         }
 
 

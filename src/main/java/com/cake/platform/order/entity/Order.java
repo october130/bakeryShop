@@ -36,6 +36,8 @@ public class Order {
     private LocalDateTime createTime;
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime updateTime;
-    private  String pay_channel;
-    private String translation_id;
+    @TableField("pay_channel")
+    private  String payChannel;
+    @TableField("translation_id")
+    private String translationId;
 }

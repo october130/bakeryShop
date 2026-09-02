@@ -26,11 +26,21 @@ spring:
     publisher-returns: true
     listener:
       simple:
-        acknowledge-mode: manual # 手动ack消息确认
+        acknowledge-mode: auto # 自动ack消息确认
         retry:
           enabled: true
           max-attempts: 3
           initial-interval: 1000ms
+        default-requeue-rejected: false
+
+  # Spring AI (DeepSeek 兼容 OpenAI 协议)
+  ai:
+    openai:
+      api-key: ${DEEPSEEK_API_KEY:your-api-key-here}
+      base-url: https://api.deepseek.com
+      chat:
+        options:
+          model: deepseek-chat
 
 
 # JWT

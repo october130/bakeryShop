@@ -10,9 +10,11 @@ import com.cake.platform.common.config.RabbitMQConfig;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @Component
@@ -22,6 +24,8 @@ public class SeckillConsumer {//秒杀消费者
     private FlashSaleOrderMapper flashSaleOrderMapper;
     @Resource
     private FlashSaleMapper flashSaleMapper;
+    @Resource
+    private RabbitTemplate rabbitTemplate;
     @RabbitListener(queues = RabbitMQConfig.QUEUE_NAME)//监听队列
     @Transactional
     public void listener(Map<String, Object>msg){
@@ -65,6 +69,15 @@ public class SeckillConsumer {//秒杀消费者
         flashSaleOrderMapper.insert(flashSaleOrder);//最终将订单写入数据库
         log.info("订单创建成功: {}", flashSaleOrder);
 
+        // 发送延迟消息：15分钟未支付则超时取消（走死信队列）
+        Map<String, Object> delayMsg = new HashMap<>();
+        delayMsg.put("flashSaleOrderId", flashSaleOrder.getId());
+        delayMsg.put("flashSaleId", flashSaleId);
+        delayMsg.put("userId", userId);
+        rabbitTemplate.convertAndSend(
+                RabbitMQConfig.DELAY_EXCHANGE,
+                RabbitMQConfig.DELAY_ROUTING_KEY,
+                delayMsg);
     }
 
 }

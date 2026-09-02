@@ -1,5 +1,6 @@
 package com.cake.platform.common.config;
 
+import com.cake.platform.common.interceptor.AdminInterceptor;
 import com.cake.platform.common.interceptor.AuthInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -10,24 +11,29 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class WebMvcConfig implements WebMvcConfigurer {
 
     private final AuthInterceptor authInterceptor;
+    private final AdminInterceptor adminInterceptor;
 
-    public WebMvcConfig(AuthInterceptor authInterceptor) {
+    public WebMvcConfig(AdminInterceptor adminInterceptor, AuthInterceptor authInterceptor) {
+        this.adminInterceptor = adminInterceptor;
         this.authInterceptor = authInterceptor;
     }
-
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(authInterceptor)
                 .addPathPatterns("/api/**")// 拦截所有请求
-                .excludePathPatterns(
+                .excludePathPatterns(//这个表示不拦截的请求
                         "/api/user/login",
                         "/api/user/register",
                         "/api/bakery/list",
                         "/api/bakery/detail/**",
                         "/api/cake/list/**",
                         "/api/cake/detail/**",
-                        "/api/cake/category/**"
+                        "/api/cake/category/**",
+                        "/api/admin/login"
                 );
+        registry.addInterceptor(adminInterceptor)// 添加拦截器
+                .addPathPatterns("/api/admin/**")// 拦截所有请求
+                .excludePathPatterns("/api/admin/login");
     }
 
     @Override

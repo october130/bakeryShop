@@ -25,6 +25,9 @@ public class Cake {
     private Integer customizable;
     private Integer status;
     private Integer sold;
+
+    @TableLogic // 逻辑删除
+    private Integer deleted;
     @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createTime;
 

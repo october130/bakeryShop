@@ -1,9 +1,9 @@
-package com.cake.platform.shoppingcar.service;
+package com.cake.platform.shoppingCart.service;
 
 import com.cake.platform.common.result.Result;
-import com.cake.platform.shoppingcar.VO.CartItemVO;
-import com.cake.platform.shoppingcar.VO.CheckoutVO;
-import com.cake.platform.shoppingcar.dto.CartAddDTO;
+import com.cake.platform.shoppingCart.VO.CartItemVO;
+import com.cake.platform.shoppingCart.VO.CheckoutVO;
+import com.cake.platform.shoppingCart.dto.CartAddDTO;
 
 import java.util.List;
 
@@ -15,4 +15,5 @@ public interface CartService {
     List<CartItemVO> listCart();
 
     Result<CheckoutVO> checkout();
+    void clearCart();
 }
