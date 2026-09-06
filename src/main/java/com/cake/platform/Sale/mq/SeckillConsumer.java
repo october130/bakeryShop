@@ -29,7 +29,11 @@ public class SeckillConsumer {//秒杀消费者
     @RabbitListener(queues = RabbitMQConfig.QUEUE_NAME)//监听队列
     @Transactional
     public void listener(Map<String, Object>msg){
-        log.info("接收到消息: {}", msg);
+        log.info("====== 秒杀消费者收到消息 ====== msg={}", msg);
+        if (msg == null || msg.isEmpty()) {
+            log.error("消息为空，跳过处理");
+            return;
+        }
 
         Long flashSaleId =Long.valueOf(msg.get("flashSaleId").toString()) ;
       Long userId =  Long.valueOf(msg.get("userId").toString());//从用户端获取用户ID，
@@ -60,14 +64,13 @@ public class SeckillConsumer {//秒杀消费者
             return;
         }
 
-
         FlashSaleOrder flashSaleOrder = new FlashSaleOrder();
         flashSaleOrder.setFlashSaleId(flashSaleId);
         flashSaleOrder.setUserId(userId);
         flashSaleOrder.setOrderNo(generateOrderNo);
         flashSaleOrder.setStatus(0);//订单状态：0-待支付
         flashSaleOrderMapper.insert(flashSaleOrder);//最终将订单写入数据库
-        log.info("订单创建成功: {}", flashSaleOrder);
+        log.info("====== 订单创建成功 ====== orderId={}, orderNo={}", flashSaleOrder.getId(), flashSaleOrder.getOrderNo());
 
         // 发送延迟消息：15分钟未支付则超时取消（走死信队列）
         Map<String, Object> delayMsg = new HashMap<>();

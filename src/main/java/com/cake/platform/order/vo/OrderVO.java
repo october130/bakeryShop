@@ -18,5 +18,8 @@ public class OrderVO {
     private Integer totalPrice;
     private String status;
     private LocalDateTime createTime;
+    private String address;
+    private String phone;
+    private String remark;
     private List<OrderItemVO> items;
 }

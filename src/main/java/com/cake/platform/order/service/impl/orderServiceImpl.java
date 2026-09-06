@@ -31,6 +31,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class orderServiceImpl  implements orderService {
@@ -108,6 +109,9 @@ public class orderServiceImpl  implements orderService {
                 .totalPrice(totalPrice)
                 .status("待支付")
                 .createTime(order.getCreateTime())
+                .address(order.getAddress())
+                .phone(order.getPhone())
+                .remark(order.getRemark())
                 .items(orderItems)
                 .build();
 
@@ -133,7 +137,7 @@ public class orderServiceImpl  implements orderService {
         if (order==null){
             return Result.error("订单不存在");
         }
-        if (!order.getUserId().equals(orderDTO.getUserId())){
+        if (!order.getUserId().equals(UserIdUtils.getUserId())){
             return Result.error("无权限支付该订单");}
 
 
@@ -148,9 +152,9 @@ public class orderServiceImpl  implements orderService {
         }
         order.setStatus(1);
         order.setPayTime(LocalDateTime.now());
-        order.setPayChannel("虚拟账户余额支付");
-        String translation_id = order.getOrderNo();
-        order.setTranslationId(translation_id);
+        order.setPayChannel("MOCK");// 按项目规范取值 MOCK/ALIPAY/WECHAT
+        String transactionId = "MOCK" + System.currentTimeMillis();// 模拟第三方流水号
+        order.setTransactionId(transactionId);
         orderMapper.updateById(order);
         cartService.clearCart(); // 清空购物车
         return Result.success("支付成功", null);
@@ -169,7 +173,7 @@ public class orderServiceImpl  implements orderService {
                 .totalPrice(order.getTotalAmount())
                 .status(statusText(order.getStatus()))
                 .createTime(order.getCreateTime())
-                .build()).toList();
+                .build()).collect(Collectors.toList());
         return Result.success(orderVOS);
     }
 
@@ -190,13 +194,16 @@ public class orderServiceImpl  implements orderService {
                 .price(d.getPrice())
                 .amount(d.getQuantity())
                 .customInfo(d.getCustomInfo())
-                .build()).toList();
+                .build()).collect(Collectors.toList());
         OrderVO vo = OrderVO.builder()
                 .id(order.getId())
                 .orderNo(order.getOrderNo())
                 .totalPrice(order.getTotalAmount())
                 .status(statusText(order.getStatus()))
                 .createTime(order.getCreateTime())
+                .address(order.getAddress())
+                .phone(order.getPhone())
+                .remark(order.getRemark())
                 .items(items)
                 .build();
         return Result.success(vo);
@@ -234,7 +241,7 @@ public class orderServiceImpl  implements orderService {
                 .totalPrice(order.getTotalAmount())
                 .status(statusText(order.getStatus()))
                 .createTime(order.getCreateTime())
-                .build()).toList();
+                .build()).collect(Collectors.toList());
         return Result.success(orderVOS);
     }
 
@@ -293,13 +300,16 @@ public class orderServiceImpl  implements orderService {
                 .price(d.getPrice())
                 .amount(d.getQuantity())
                 .customInfo(d.getCustomInfo())
-                .build()).toList();
+                .build()).collect(Collectors.toList());
         OrderVO vo = OrderVO.builder()
                 .id(order.getId())
                 .orderNo(order.getOrderNo())
                 .totalPrice(order.getTotalAmount())
                 .status(statusText(order.getStatus()))
                 .createTime(order.getCreateTime())
+                .address(order.getAddress())
+                .phone(order.getPhone())
+                .remark(order.getRemark())
                 .items(items)
                 .build();
         return Result.success(vo);

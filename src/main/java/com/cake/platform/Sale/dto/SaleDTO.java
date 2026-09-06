@@ -1,4 +1,4 @@
-package com.cake.platform.Sale.VO;
+package com.cake.platform.Sale.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,15 +11,10 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class FlashSaleVO {
-    private Long id;
+public class SaleDTO {
     private Long cakeId;
-    private String cakeName;
-    private String cakeImage;
-    private Integer flashPrice;
-    private Integer originalPrice;
+    private  Integer flashPrice;
     private Integer stock;
     private LocalDateTime beginTime;
     private LocalDateTime endTime;
-    private Integer status;
 }

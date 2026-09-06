@@ -41,7 +41,7 @@ CREATE TABLE `category` (
                             `status` TINYINT DEFAULT 1 COMMENT '状态(0-禁用 1-启用)'
 ) COMMENT '蛋糕分类表';
 
--- 蛋糕商品表
+-- 蛋糕表
 CREATE TABLE `cake` (
                         `id` BIGINT PRIMARY KEY AUTO_INCREMENT,
                         `bakery_id` BIGINT NOT NULL COMMENT '所属烘焙店',

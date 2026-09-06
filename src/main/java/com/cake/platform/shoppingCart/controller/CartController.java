@@ -29,10 +29,10 @@ public class CartController {
     }
     @GetMapping("/list")
     @Operation(summary = "获取购物车列表")
-    public List<CartItemVO> listCart() {
+    public Result<List<CartItemVO>> listCart() {
         log.info("获取购物车列表");
         List<CartItemVO> cartItemVO = cartService.listCart();
-        return cartItemVO;
+        return Result.success(cartItemVO);
     }
     @DeleteMapping("/remove/{cakeId}")
     @Operation(summary = "删除购物车")

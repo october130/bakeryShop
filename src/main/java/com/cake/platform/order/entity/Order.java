@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@TableName("order")
+@TableName("`order`")
 public class Order {
     @TableId(type = IdType.AUTO)
     private Long id;
@@ -38,6 +38,6 @@ public class Order {
     private LocalDateTime updateTime;
     @TableField("pay_channel")
     private  String payChannel;
-    @TableField("translation_id")
-    private String translationId;
+    @TableField("transaction_id")
+    private String transactionId;
 }

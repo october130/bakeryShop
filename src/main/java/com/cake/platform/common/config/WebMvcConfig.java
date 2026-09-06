@@ -5,6 +5,7 @@ import com.cake.platform.common.interceptor.AuthInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
@@ -29,7 +30,10 @@ public class WebMvcConfig implements WebMvcConfigurer {
                         "/api/cake/list/**",
                         "/api/cake/detail/**",
                         "/api/cake/category/**",
-                        "/api/admin/login"
+                        "/api/admin/login",
+                        "/api/upload",
+                        "/api/flashSale/list",
+                        "/api/flashSale/detail/**"
                 );
         registry.addInterceptor(adminInterceptor)// 添加拦截器
                 .addPathPatterns("/api/admin/**")// 拦截所有请求
@@ -44,5 +48,12 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 .allowedHeaders("*")
                 .allowCredentials(true)
                 .maxAge(3600);
+    }
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        // 映射本地图片目录到 /images/** URL
+        registry.addResourceHandler("/images/**")
+                .addResourceLocations("file:E:/wechat_morgan_yun/miniprogram/images/");
     }
 }

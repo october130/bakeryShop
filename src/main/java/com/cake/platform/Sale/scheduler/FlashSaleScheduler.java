@@ -35,7 +35,7 @@ public class FlashSaleScheduler {
         // 查询: 活动已开始且未结束，状态为"未开始"(status=0)
         List<FlashSale> list = flashSaleMapper.selectList(
                 new LambdaQueryWrapper<FlashSale>()
-                        .le(FlashSale::getStartTime, now)   // start_time <= now (已到达开始时间)
+                        .le(FlashSale::getBeginTime, now)   // begin_time <= now (已到达开始时间)
                         .ge(FlashSale::getEndTime, now)     // end_time >= now (还没结束)
                         .eq(FlashSale::getStatus, 0)        // 状态为"未开始"
         );
@@ -78,7 +78,7 @@ public class FlashSaleScheduler {
                 .flashPrice(flashSale.getFlashPrice())
                 .originalPrice(originalPrice)
                 .stock(flashSale.getStock())
-                .beginTime(flashSale.getStartTime())
+                .beginTime(flashSale.getBeginTime())
                 .endTime(flashSale.getEndTime())
                 .status(flashSale.getStatus())
                 .build();

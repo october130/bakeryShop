@@ -20,7 +20,7 @@ public class FlashSale {
     private Integer flashPrice;
     private Integer stock;//秒杀蛋糕库存
     @TableField("begin_time")
-    private LocalDateTime startTime;
+    private LocalDateTime beginTime;
     private LocalDateTime endTime;
     private Integer status;
     @TableField(fill = FieldFill.INSERT)

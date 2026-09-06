@@ -32,7 +32,7 @@ public class CartServiceImpl  implements CartService{
 
         String key = "cart:" + UserIdUtils.getUserId();//redis拼接key
 
-        redisTemplate.opsForHash().increment(key, cakeId, cartAddDTO.getAmount());//之后用hash结构存储购物车数据，
+        redisTemplate.opsForHash().increment(key, String.valueOf(cakeId), cartAddDTO.getAmount());//之后用hash结构存储购物车数据，
         // 其中key是用户id，field是蛋糕id，value是蛋糕数量
             return Result.success("添加成功");
         }
@@ -41,7 +41,7 @@ public class CartServiceImpl  implements CartService{
     public void removeCart(Long cakeId) {
         Long userId = UserIdUtils.getUserId();
         String key = "cart:" + userId;
-        redisTemplate.opsForHash().delete(key, cakeId);
+        redisTemplate.opsForHash().delete(key, String.valueOf(cakeId));
         log.info("删除购物车成功");
     }
 
@@ -90,7 +90,7 @@ public class CartServiceImpl  implements CartService{
 
 
             if (cake == null) {
-                redisTemplate.opsForHash().delete(key, cakeId);
+                redisTemplate.opsForHash().delete(key, String.valueOf(cakeId));
                 continue;
             }
             if (firstBakeryId == null) {

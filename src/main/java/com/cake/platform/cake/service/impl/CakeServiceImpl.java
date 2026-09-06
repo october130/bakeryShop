@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Stream;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -35,7 +35,7 @@ public class CakeServiceImpl  implements CakeService {
          if (cakes.isEmpty()){
              return Result.error("蛋糕列表为空");
          }
-         List<CakeVO> cakeVO = cakes.stream().map(cake -> toVO(cake)).toList();
+         List<CakeVO> cakeVO = cakes.stream().map(cake -> toVO(cake)).collect(Collectors.toList());
          redisTemplate.opsForValue().set(key, cakeVO, 60, TimeUnit.MINUTES);
          log.info("蛋糕列表缓存未命中: {}", key);
          return Result.success(cakeVO);
@@ -68,7 +68,7 @@ public class CakeServiceImpl  implements CakeService {
          if ( cakes.isEmpty()){
              return Result.error("该风格下蛋糕列表为空");
          }
-         List<CakeVO> cakeVO = cakes.stream().map(cake -> toVO(cake)).toList();
+         List<CakeVO> cakeVO = cakes.stream().map(cake -> toVO(cake)).collect(Collectors.toList());
          return Result.success(cakeVO);
     }
 
