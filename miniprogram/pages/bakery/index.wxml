@@ -1,0 +1,25 @@
+<!--bakery/index.wxml-->
+<view class="page">
+  <view wx:if="{{bakery}}" class="header">
+    <view class="name">{{bakery.name}}</view>
+    <view class="addr">{{bakery.address}}</view>
+    <view class="desc" wx:if="{{bakery.description}}">{{bakery.description}}</view>
+  </view>
+
+  <view wx:if="{{loading}}" class="tip">加载中...</view>
+  <view wx:elif="{{error}}" class="tip error">{{error}}</view>
+  <block wx:else>
+    <view wx:if="{{cakes.length === 0}}" class="tip">该店暂无蛋糕</view>
+    <view wx:for="{{cakes}}" wx:key="id" class="cake" data-id="{{item.id}}" bindtap="goCake">
+      <image class="cake-img" src="{{item.image}}" mode="aspectFill"></image>
+      <view class="cake-body">
+        <view class="cake-name">{{item.name}}</view>
+        <view class="cake-desc">{{item.description}}</view>
+        <view class="cake-meta">
+          <text class="price">¥{{item.price / 100}}</text>
+          <text class="sold" wx:if="{{item.sold}}">已售 {{item.sold}}</text>
+        </view>
+      </view>
+    </view>
+  </block>
+</view>

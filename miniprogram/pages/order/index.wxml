@@ -1,0 +1,20 @@
+<view class="page">
+  <view wx:if="{{loading}}" class="tip">加载中...</view>
+  <view wx:elif="{{error}}" class="tip error">{{error}}</view>
+  <block wx:else>
+    <view wx:if="{{orders.length === 0}}" class="tip">暂无订单</view>
+    <view wx:for="{{orders}}" wx:key="id" class="card" data-id="{{item.id}}" bindtap="goDetail">
+      <view class="card-top">
+        <text class="order-no">{{item.orderNo}}</text>
+        <text class="status status-{{item.statusClass}}">{{item.status}}</text>
+      </view>
+      <view class="card-mid">
+        <text class="time">{{item.createTime}}</text>
+      </view>
+      <view class="card-bottom">
+        <text class="price">¥{{item.totalPrice / 100}}</text>
+        <text wx:if="{{item.canCancel}}" class="cancel-btn" catchtap="cancelOrder" data-id="{{item.id}}">取消订单</text>
+      </view>
+    </view>
+  </block>
+</view>

@@ -1,0 +1,113 @@
+/** pages/flashSale/detail.less —— 限时抢购详情 **/
+.page {
+  background: #f7f7f7;
+  min-height: 100vh;
+  padding-bottom: 140rpx;
+  box-sizing: border-box;
+}
+
+.tip {
+  padding: 100rpx 0;
+  text-align: center;
+  color: #999;
+}
+
+.tip.error {
+  color: #e64340;
+}
+
+.cake-img {
+  width: 100%;
+  height: 500rpx;
+  background: #eee;
+  display: block;
+}
+
+.price-section {
+  background: linear-gradient(135deg, #ff7e5f, #feb47b);
+  padding: 30rpx 28rpx;
+}
+
+.flash-price-row {
+  display: flex;
+  align-items: baseline;
+  gap: 12rpx;
+}
+
+.label {
+  font-size: 26rpx;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.flash-price {
+  font-size: 52rpx;
+  color: #fff;
+  font-weight: 700;
+}
+
+.original-price {
+  font-size: 26rpx;
+  color: rgba(255, 255, 255, 0.6);
+  text-decoration: line-through;
+}
+
+.stock-info {
+  font-size: 24rpx;
+  color: rgba(255, 255, 255, 0.85);
+  margin-top: 10rpx;
+}
+
+.info-section {
+  background: #fff;
+  margin: 20rpx;
+  border-radius: 16rpx;
+  padding: 24rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.04);
+}
+
+.cake-name {
+  font-size: 34rpx;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 20rpx;
+}
+
+.time-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 24rpx;
+}
+
+.time-label {
+  color: #999;
+}
+
+.time-value {
+  color: #666;
+}
+
+.bottom-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #fff;
+  padding: 20rpx;
+  box-shadow: 0 -2rpx 8rpx rgba(0, 0, 0, 0.06);
+  display: flex;
+  justify-content: center;
+}
+
+.seckill-btn {
+  background: linear-gradient(135deg, #ff5f4a, #ff7e5f);
+  color: #fff;
+  font-size: 32rpx;
+  font-weight: 700;
+  padding: 22rpx 120rpx;
+  border-radius: 48rpx;
+  box-shadow: 0 4rpx 16rpx rgba(255, 95, 74, 0.4);
+}
+
+.seckill-btn.disabled {
+  opacity: 0.6;
+}

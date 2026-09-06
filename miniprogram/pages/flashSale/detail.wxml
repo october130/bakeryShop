@@ -1,0 +1,34 @@
+<view class="page">
+  <view wx:if="{{loading}}" class="tip">加载中...</view>
+  <view wx:elif="{{error}}" class="tip error">{{error}}</view>
+  <block wx:elif="{{detail}}">
+    <!-- 蛋糕图片 -->
+    <image class="cake-img" src="{{detail.cakeImage}}" mode="aspectFill"></image>
+
+    <!-- 价格区 -->
+    <view class="price-section">
+      <view class="flash-price-row">
+        <text class="label">抢购价</text>
+        <text class="flash-price">¥{{detail.flashPrice / 100}}</text>
+        <text class="original-price">¥{{detail.originalPrice / 100}}</text>
+      </view>
+      <view class="stock-info">剩余 {{detail.stock}} 份</view>
+    </view>
+
+    <!-- 蛋糕信息 -->
+    <view class="info-section">
+      <view class="cake-name">{{detail.cakeName}}</view>
+      <view class="time-row">
+        <text class="time-label">活动时间</text>
+        <text class="time-value">{{detail.beginTime}} ~ {{detail.endTime}}</text>
+      </view>
+    </view>
+
+    <!-- 底部抢购按钮 -->
+    <view class="bottom-bar">
+      <view class="seckill-btn {{seckilling ? 'disabled' : ''}}" bindtap="doSeckill">
+        {{seckilling ? '抢购中...' : '立即抢购'}}
+      </view>
+    </view>
+  </block>
+</view>

@@ -1,0 +1,62 @@
+<view class="page">
+  <view wx:if="{{loading}}" class="tip">加载中...</view>
+  <view wx:elif="{{error}}" class="tip error">{{error}}</view>
+  <block wx:elif="{{order}}">
+    <view class="status-banner status-{{statusClass}}">
+      <text class="status-text">{{order.status}}</text>
+    </view>
+
+    <view class="section">
+      <view class="section-title">订单信息</view>
+      <view class="info-row">
+        <text class="label">订单号</text>
+        <text class="value">{{order.orderNo}}</text>
+      </view>
+      <view class="info-row">
+        <text class="label">下单时间</text>
+        <text class="value">{{order.createTime}}</text>
+      </view>
+    </view>
+
+    <view wx:if="{{order.address || order.phone}}" class="section">
+      <view class="section-title">收货信息</view>
+      <view wx:if="{{order.address}}" class="info-row">
+        <text class="label">地址</text>
+        <text class="value">{{order.address}}</text>
+      </view>
+      <view wx:if="{{order.phone}}" class="info-row">
+        <text class="label">电话</text>
+        <text class="value">{{order.phone}}</text>
+      </view>
+      <view wx:if="{{order.remark}}" class="info-row">
+        <text class="label">备注</text>
+        <text class="value">{{order.remark}}</text>
+      </view>
+    </view>
+
+    <view class="section">
+      <view class="section-title">订单项</view>
+      <view wx:for="{{order.items}}" wx:key="cakeId" class="item">
+        <view class="item-name">{{item.cakeName}}</view>
+        <view class="item-meta">
+          <text class="item-price">¥{{item.price / 100}}</text>
+          <text class="item-amount">x{{item.amount}}</text>
+        </view>
+        <view wx:if="{{item.customInfo}}" class="item-custom">定制：{{item.customInfo}}</view>
+      </view>
+    </view>
+
+    <view class="total">
+      <text>合计：</text>
+      <text class="total-price">¥{{order.totalPrice / 100}}</text>
+    </view>
+
+    <view wx:if="{{canCancel}}" class="bottom-bar">
+      <view class="cancel-btn" bindtap="cancelOrder">取消订单</view>
+    </view>
+
+    <view wx:if="{{canPay}}" class="bottom-bar">
+      <view class="pay-btn" bindtap="payOrder">支付订单</view>
+    </view>
+  </block>
+</view>

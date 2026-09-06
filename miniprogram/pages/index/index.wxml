@@ -1,0 +1,66 @@
+<!--index.wxml-->
+<view class="page">
+  <!-- 轮播图 -->
+  <swiper class="banner" indicator-dots autoplay circular interval="3000">
+    <swiper-item wx:for="{{banners}}" wx:key="id">
+      <image class="banner-img" src="{{item.imageUrl}}" mode="aspectFill"></image>
+    </swiper-item>
+  </swiper>
+
+  <!-- 广告语 -->
+  <view class="slogan">
+    <text class="slogan-text"> 焙享时光 · 新鲜烘焙 · 每日现做 · 甜蜜到家</text>
+  </view>
+
+  <!-- 宣传海报 -->
+  <image class="poster" src="http://localhost:8082/images/banner/poster.jpg" mode="aspectFill"></image>
+
+  <view wx:if="{{loading}}" class="tip">加载中...</view>
+  <view wx:elif="{{error}}" class="tip error">{{error}}</view>
+  <block wx:else>
+    <view class="section-title">附近门店</view>
+    <view wx:if="{{bakeries.length === 0}}" class="tip">暂无烘焙店</view>
+    <view wx:for="{{bakeries}}" wx:key="id" class="card" data-id="{{item.id}}" bindtap="goBakery">
+      <image wx:if="{{item.image}}" class="card-img" src="{{item.image}}" mode="aspectFill"></image>
+      <view wx:else class="card-img card-img-default">
+        <text class="card-img-text">暂无图片</text>
+      </view>
+      <view class="card-body">
+        <view class="card-name">{{item.name}}</view>
+        <view class="card-addr">{{item.address}}</view>
+        <view class="card-meta">
+          <text>人均 ¥{{item.avgPrice / 100}}</text>
+          <text wx:if="{{item.distance}}" class="dist">距你 {{item.distance}} km</text>
+        </view>
+      </view>
+    </view>
+  </block>
+
+  <!-- 限时抢购 -->
+  <view wx:if="{{flashSales.length > 0}}">
+    <view class="section-title"><image class="section-icon" src="/images/icon/flash-sale.png" mode="aspectFit"></image> 限时抢购</view>
+    <scroll-view class="flash-scroll" scroll-x>
+      <view
+        wx:for="{{flashSales}}"
+        wx:key="id"
+        class="flash-card"
+        data-id="{{item.id}}"
+        bindtap="goFlashSale"
+      >
+        <image class="flash-img" src="{{item.cakeImage}}" mode="aspectFill"></image>
+        <view class="flash-name">{{item.cakeName}}</view>
+        <view class="flash-price-row">
+          <text class="flash-price">¥{{item.flashPrice / 100}}</text>
+          <text class="flash-original">¥{{item.originalPrice / 100}}</text>
+        </view>
+        <view class="flash-stock">剩余 {{item.stock}} 份</view>
+      </view>
+    </scroll-view>
+  </view>
+
+  <!-- AI 悬浮按钮 -->
+  <view class="ai-fab" bindtap="goAiChat">
+    <image class="ai-fab-icon" src="/images/icon/ai.png" mode="aspectFit"></image>
+    <text class="ai-fab-text">AI</text>
+  </view>
+</view>

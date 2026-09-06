@@ -1,0 +1,138 @@
+/** pages/goods/index.less —— 全部商品 **/
+.page {
+  padding: 20rpx;
+  padding-top: 0;
+  background: #f7f7f7;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+/* 顶部栏 */
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24rpx 8rpx;
+  position: sticky;
+  top: 0;
+  background: #f7f7f7;
+  z-index: 10;
+}
+
+.top-title {
+  font-size: 36rpx;
+  font-weight: 700;
+  color: #333;
+}
+
+.cart-icon {
+  position: relative;
+  width: 72rpx;
+  height: 72rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cart-emoji {
+  font-size: 48rpx;
+}
+
+.cart-badge {
+  position: absolute;
+  top: 0;
+  right: -8rpx;
+  background: #ff5f4a;
+  color: #fff;
+  font-size: 20rpx;
+  min-width: 32rpx;
+  height: 32rpx;
+  line-height: 32rpx;
+  text-align: center;
+  border-radius: 16rpx;
+  padding: 0 8rpx;
+}
+
+.tip {
+  padding: 120rpx 0;
+  text-align: center;
+  color: #999;
+}
+
+.tip.error {
+  color: #e64340;
+}
+
+.goods-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.goods-card {
+  width: calc(50% - 10rpx);
+  background: #fff;
+  border-radius: 16rpx;
+  margin-bottom: 20rpx;
+  overflow: hidden;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.04);
+}
+
+.goods-img {
+  width: 100%;
+  height: 280rpx;
+  background: #eee;
+}
+
+.goods-img-default {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.goods-img-text {
+  color: #ccc;
+  font-size: 24rpx;
+}
+
+.goods-info {
+  padding: 16rpx;
+}
+
+.goods-name {
+  display: block;
+  font-size: 28rpx;
+  color: #333;
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.goods-desc {
+  display: block;
+  font-size: 22rpx;
+  color: #999;
+  margin-top: 8rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.goods-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 12rpx;
+}
+
+.goods-price {
+  color: #ff5f4a;
+  font-size: 30rpx;
+  font-weight: 600;
+}
+
+.goods-sold {
+  color: #bbb;
+  font-size: 22rpx;
+}

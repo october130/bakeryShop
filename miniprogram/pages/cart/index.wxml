@@ -1,0 +1,37 @@
+<view class="page">
+  <view wx:if="{{loading}}" class="tip">加载中...</view>
+  <view wx:elif="{{error}}" class="tip error">{{error}}</view>
+  <block wx:else>
+    <view wx:if="{{items.length === 0}}" class="empty">
+      <text class="empty-text">购物车空空如也</text>
+      <view class="empty-btn" bindtap="goShopping">去逛逛</view>
+    </view>
+    <block wx:else>
+      <view wx:for="{{items}}" wx:key="cakeId" class="cart-item">
+        <image wx:if="{{item.image}}" class="item-img" src="{{item.image}}" mode="aspectFill"></image>
+        <view wx:else class="item-img item-img-default">
+          <text class="item-img-text">暂无图片</text>
+        </view>
+        <view class="item-info">
+          <text class="item-name">{{item.cakeName}}</text>
+          <view class="item-bottom">
+            <text class="item-price">¥{{item.price / 100}}</text>
+            <text class="item-amount">x{{item.amount}}</text>
+          </view>
+        </view>
+        <view class="item-delete" catchtap="removeItem" data-id="{{item.cakeId}}">
+          <text class="delete-icon">×</text>
+        </view>
+      </view>
+
+      <!-- 底部结算栏 -->
+      <view class="bottom-bar">
+        <view class="total-info">
+          <text>合计：</text>
+          <text class="total-price">¥{{totalPrice / 100}}</text>
+        </view>
+        <view class="checkout-btn" bindtap="goCheckout">去结算</view>
+      </view>
+    </block>
+  </block>
+</view>

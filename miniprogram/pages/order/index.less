@@ -1,0 +1,99 @@
+/** pages/order/index.less —— 订单列表 **/
+.page {
+  padding: 20rpx;
+  background: #f7f7f7;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+.tip {
+  padding: 100rpx 0;
+  text-align: center;
+  color: #999;
+}
+
+.tip.error {
+  color: #e64340;
+}
+
+.card {
+  background: #fff;
+  border-radius: 16rpx;
+  padding: 24rpx;
+  margin-bottom: 20rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.04);
+}
+
+.card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.order-no {
+  font-size: 28rpx;
+  color: #333;
+  font-weight: 500;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-right: 16rpx;
+}
+
+.status {
+  font-size: 24rpx;
+  padding: 4rpx 14rpx;
+  border-radius: 20rpx;
+  flex-shrink: 0;
+}
+
+.status-pending {
+  color: #ff7e5f;
+  background: rgba(255, 126, 95, 0.1);
+}
+
+.status-processing {
+  color: #4a90e2;
+  background: rgba(74, 144, 226, 0.1);
+}
+
+.status-done {
+  color: #52c41a;
+  background: rgba(82, 196, 26, 0.1);
+}
+
+.status-canceled {
+  color: #999;
+  background: rgba(153, 153, 153, 0.1);
+}
+
+.card-mid {
+  margin-top: 10rpx;
+}
+
+.time {
+  font-size: 24rpx;
+  color: #999;
+}
+
+.card-bottom {
+  margin-top: 16rpx;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.price {
+  color: #ff5f4a;
+  font-size: 34rpx;
+  font-weight: 600;
+}
+
+.cancel-btn {
+  font-size: 24rpx;
+  color: #ff5f4a;
+  padding: 8rpx 20rpx;
+  border: 1rpx solid #ff5f4a;
+  border-radius: 24rpx;
+}

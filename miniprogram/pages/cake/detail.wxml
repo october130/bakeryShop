@@ -1,0 +1,42 @@
+<view class="page">
+  <view wx:if="{{loading}}" class="tip">加载中...</view>
+  <view wx:elif="{{error}}" class="tip error">{{error}}</view>
+  <block wx:elif="{{cake}}">
+    <!-- 主图 -->
+    <image wx:if="{{cake.image}}" class="hero-img" src="{{cake.image}}" mode="aspectFill"></image>
+    <view wx:else class="hero-img hero-img-default">
+      <text class="hero-img-text">暂无图片</text>
+    </view>
+
+    <!-- 基本信息 -->
+    <view class="info-card">
+      <view class="price-row">
+        <text class="price">¥{{cake.price / 100}}</text>
+        <text class="sold">已售 {{cake.sold}}</text>
+      </view>
+      <text class="cake-name">{{cake.name}}</text>
+      <view wx:if="{{cake.customizable == 1}}" class="tag-row">
+        <text class="tag">支持定制</text>
+      </view>
+    </view>
+
+    <!-- 描述 -->
+    <view class="desc-card">
+      <view class="section-label">商品描述</view>
+      <text class="desc-text">{{cake.description || '暂无描述'}}</text>
+    </view>
+
+    <!-- 底部操作栏 -->
+    <view class="bottom-bar">
+      <view class="amount-control">
+        <text class="amount-btn" bindtap="changeAmount" data-delta="-1">-</text>
+        <text class="amount-num">{{amount}}</text>
+        <text class="amount-btn" bindtap="changeAmount" data-delta="1">+</text>
+      </view>
+      <view class="action-btns">
+        <view class="cart-btn" bindtap="addToCart">加入购物车</view>
+        <view class="buy-btn" bindtap="buyNow">立即购买</view>
+      </view>
+    </view>
+  </block>
+</view>

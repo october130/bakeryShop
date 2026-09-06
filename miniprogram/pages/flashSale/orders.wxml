@@ -1,0 +1,26 @@
+<view class="page">
+  <view wx:if="{{loading}}" class="tip">加载中...</view>
+  <view wx:elif="{{error}}" class="tip error">{{error}}</view>
+  <block wx:elif="{{orders.length > 0}}">
+    <view wx:for="{{orders}}" wx:key="id" class="order-card">
+      <view class="order-header">
+        <text class="order-no">{{item.orderNo}}</text>
+        <text class="order-status status-{{item.status}}">
+          {{item.status === 0 ? '待支付' : item.status === 1 ? '已支付' : '已取消'}}
+        </text>
+      </view>
+      <view class="order-body">
+        <image class="cake-img" src="{{item.cakeImage}}" mode="aspectFill"></image>
+        <view class="order-info">
+          <view class="cake-name">{{item.cakeName}}</view>
+          <view class="cake-price">¥{{item.flashPrice / 100}}</view>
+          <view class="order-time">{{item.createTime}}</view>
+        </view>
+      </view>
+      <view wx:if="{{item.status === 0}}" class="order-footer">
+        <view class="pay-btn" data-id="{{item.id}}" bindtap="payOrder">立即支付</view>
+      </view>
+    </view>
+  </block>
+  <view wx:else class="tip">暂无秒杀订单</view>
+</view>

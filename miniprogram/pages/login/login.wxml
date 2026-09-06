@@ -1,0 +1,27 @@
+<!--login.wxml-->
+<view class="login">
+  <view class="brand">烘焙蛋糕</view>
+  <view class="brand-sub">登录后开启甜蜜之旅</view>
+  <view class="form">
+    <input
+      class="ipt"
+      type="number"
+      placeholder="请输入手机号"
+      placeholder-class="ph"
+      value="{{phone}}"
+      maxlength="11"
+      bindinput="onPhone"
+    />
+    <input
+      class="ipt"
+      type="password"
+      placeholder="请输入密码"
+      placeholder-class="ph"
+      value="{{password}}"
+      bindinput="onPassword"
+    />
+    <button class="btn" loading="{{submitting}}" bindtap="doLogin">登 录</button>
+    <view class="link" bindtap="goRegister">没有账号？去注册</view>
+    <view class="tip">演示账号：数据库 user 表里注册一个即可，或直接看 README</view>
+  </view>
+</view>

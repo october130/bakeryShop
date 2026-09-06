@@ -1,0 +1,33 @@
+<view class="page">
+  <!-- 用户信息卡片 -->
+  <view class="user-card">
+    <view class="user-info">
+      <view wx:if="{{userInfo && userInfo.avatar}}" class="avatar">
+        <image class="avatar-img" src="{{userInfo.avatar}}" mode="aspectFill"></image>
+      </view>
+      <view wx:else class="avatar avatar-default">
+        <text class="avatar-text">{{userInfo && userInfo.nickname ? userInfo.nickname[0] : '用'}}</text>
+      </view>
+      <view class="user-detail">
+        <text class="nickname">{{userInfo && userInfo.nickname ? userInfo.nickname : '未登录'}}</text>
+        <text class="phone">{{userInfo && userInfo.phone ? userInfo.phone : ''}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 功能菜单 -->
+  <view class="menu-section">
+    <view class="menu-item" wx:for="{{menuItems}}" wx:key="title" bindtap="goToPage" data-url="{{item.url}}">
+      <view class="menu-content">
+        <text class="menu-title">{{item.title}}</text>
+        <text class="menu-desc">{{item.desc}}</text>
+      </view>
+      <text class="menu-arrow">›</text>
+    </view>
+  </view>
+
+  <!-- 退出登录 -->
+  <view class="logout-section">
+    <view class="logout-btn" bindtap="doLogout">退出登录</view>
+  </view>
+</view>

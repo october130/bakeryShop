@@ -1,0 +1,59 @@
+{
+  "pages": [
+    "pages/login/login",
+    "pages/register/index",
+    "pages/index/index",
+    "pages/bakery/index",
+    "pages/goods/index",
+    "pages/cake/detail",
+    "pages/cart/index",
+    "pages/checkout/index",
+    "pages/order/index",
+    "pages/order/detail",
+    "pages/mine/index",
+    "pages/ai/chat",
+    "pages/flashSale/detail",
+    "pages/flashSale/orders"
+  ],
+  "window": {
+    "navigationBarBackgroundColor": "#ff7e5f",
+    "navigationBarTextStyle": "white",
+    "navigationBarTitleText": "烘焙蛋糕",
+    "backgroundColor": "#f7f7f7",
+    "backgroundTextStyle": "light"
+  },
+  "tabBar": {
+    "color": "#999999",
+    "selectedColor": "#ff7e5f",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页",
+        "iconPath": "images/tabbar/home.png",
+        "selectedIconPath": "images/tabbar/home-active.png"
+      },
+      {
+        "pagePath": "pages/goods/index",
+        "text": "商品",
+        "iconPath": "images/tabbar/goods.png",
+        "selectedIconPath": "images/tabbar/goods-active.png"
+      },
+      {
+        "pagePath": "pages/order/index",
+        "text": "订单",
+        "iconPath": "images/tabbar/order.png",
+        "selectedIconPath": "images/tabbar/order-active.png"
+      },
+      {
+        "pagePath": "pages/mine/index",
+        "text": "我的",
+        "iconPath": "images/tabbar/mine.png",
+        "selectedIconPath": "images/tabbar/mine-active.png"
+      }
+    ]
+  },
+  "sitemapLocation": "sitemap.json",
+  "lazyCodeLoading": "requiredComponents"
+}

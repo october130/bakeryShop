@@ -1,0 +1,80 @@
+<view class="chat-page">
+  <!-- 消息列表 -->
+  <scroll-view
+    class="chat-list"
+    scroll-y
+    scroll-into-view="msg-{{messages.length - 1}}"
+    scroll-with-animation
+  >
+    <view
+      wx:for="{{messages}}"
+      wx:key="index"
+      id="msg-{{index}}"
+      class="msg-row {{item.role === 'user' ? 'msg-user' : 'msg-ai'}}"
+    >
+      <!-- AI 头像 -->
+      <image
+        wx:if="{{item.role === 'ai'}}"
+        class="avatar"
+        src="/images/icon/ai.png"
+        mode="aspectFit"
+      ></image>
+
+      <view class="bubble-wrap">
+        <view class="bubble {{item.role === 'user' ? 'bubble-user' : 'bubble-ai'}}">
+          <text class="bubble-text">{{item.content}}</text>
+        </view>
+
+        <!-- AI 推荐蛋糕卡片 -->
+        <view wx:if="{{item.cakes && item.cakes.length > 0}}" class="cake-list">
+          <view
+            wx:for="{{item.cakes}}"
+            wx:for-item="cake"
+            wx:key="id"
+            class="cake-card"
+            data-id="{{cake.id}}"
+            bindtap="goCakeDetail"
+          >
+            <image class="cake-img" src="{{cake.image}}" mode="aspectFill"></image>
+            <view class="cake-info">
+              <view class="cake-name">{{cake.name}}</view>
+              <view class="cake-desc">{{cake.description}}</view>
+              <view class="cake-price">¥{{cake.price / 100}}</view>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <!-- 用户头像 -->
+      <view wx:if="{{item.role === 'user'}}" class="avatar user-avatar">
+        <text class="avatar-text">我</text>
+      </view>
+    </view>
+
+    <!-- 加载中提示 -->
+    <view wx:if="{{loading}}" class="msg-row msg-ai">
+      <image class="avatar" src="/images/icon/ai.png" mode="aspectFit"></image>
+      <view class="bubble-wrap">
+        <view class="bubble bubble-ai">
+          <text class="bubble-text loading-dots">正在思考中...</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 底部占位 -->
+    <view style="height: 20rpx;"></view>
+  </scroll-view>
+
+  <!-- 输入栏 -->
+  <view class="input-bar">
+    <input
+      class="input"
+      value="{{inputVal}}"
+      bindinput="onInput"
+      bindconfirm="sendMessage"
+      placeholder="告诉我你想吃什么蛋糕..."
+      confirm-type="send"
+    />
+    <view class="send-btn {{inputVal ? '' : 'disabled'}}" bindtap="sendMessage">发送</view>
+  </view>
+</view>

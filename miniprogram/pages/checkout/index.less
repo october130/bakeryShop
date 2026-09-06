@@ -1,0 +1,141 @@
+/** pages/checkout/index.less —— 结算确认 **/
+.page {
+  background: #f7f7f7;
+  min-height: 100vh;
+  padding-bottom: 140rpx;
+  box-sizing: border-box;
+}
+
+/* 区块 */
+.section {
+  background: #fff;
+  margin: 20rpx;
+  border-radius: 16rpx;
+  padding: 24rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.04);
+}
+
+.section-title {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 20rpx;
+}
+
+/* 商品清单 */
+.checkout-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16rpx 0;
+  border-bottom: 1rpx solid #f5f5f5;
+}
+
+.checkout-item:last-child {
+  border-bottom: none;
+}
+
+.item-left {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+}
+
+.item-name {
+  font-size: 28rpx;
+  color: #333;
+}
+
+.item-amount {
+  font-size: 24rpx;
+  color: #999;
+}
+
+.item-price {
+  font-size: 28rpx;
+  color: #ff5f4a;
+  font-weight: 500;
+}
+
+/* 表单 */
+.form-item {
+  display: flex;
+  align-items: center;
+  padding: 20rpx 0;
+  border-bottom: 1rpx solid #f5f5f5;
+}
+
+.form-item:last-child {
+  border-bottom: none;
+}
+
+.form-label {
+  font-size: 28rpx;
+  color: #333;
+  width: 160rpx;
+  flex-shrink: 0;
+}
+
+.form-input {
+  flex: 1;
+  font-size: 28rpx;
+  color: #333;
+}
+
+/* 支付方式 */
+.pay-method {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16rpx 0;
+}
+
+.pay-label {
+  font-size: 28rpx;
+  color: #333;
+}
+
+.pay-balance {
+  font-size: 26rpx;
+  color: #ff7e5f;
+  font-weight: 500;
+}
+
+/* 底部提交栏 */
+.bottom-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #fff;
+  padding: 20rpx 24rpx;
+  padding-bottom: calc(20rpx + env(safe-area-inset-bottom));
+  box-shadow: 0 -2rpx 8rpx rgba(0, 0, 0, 0.06);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.total-info {
+  font-size: 28rpx;
+  color: #333;
+}
+
+.total-price {
+  font-size: 36rpx;
+  color: #ff5f4a;
+  font-weight: 700;
+}
+
+.submit-btn {
+  background: #ff7e5f;
+  color: #fff;
+  font-size: 30rpx;
+  font-weight: 600;
+  padding: 18rpx 60rpx;
+  border-radius: 48rpx;
+}
+
+.submit-btn.disabled {
+  opacity: 0.6;
+}
