@@ -36,7 +36,7 @@ spring:
   # Spring AI (DeepSeek 兼容 OpenAI 协议)
   ai:
     openai:
-      api-key: sk-c59f4e4a1eb84889a7f850decab5e7ae
+      api-key: bro自己的API key
       base-url: https://api.deepseek.com
       chat:
         options:
